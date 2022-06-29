@@ -67,11 +67,15 @@ class _LoginSignupState extends State<LoginSignup> {
               ),
             ),
           ),
-          Positioned(
+          AnimatedPositioned(
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.easeIn,
             top: 184.0,
-            child: Container(
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.easeIn,
               padding: const EdgeInsets.all(20.0),
-              height: isSignUp ? 280.0 : 248.0,
+              height: isSignUp ? 292.0 : 260.0,
               width: MediaQuery.of(context).size.width - 32,
               margin: const EdgeInsets.symmetric(horizontal: 16.0),
               decoration: BoxDecoration(
@@ -315,8 +319,10 @@ class _LoginSignupState extends State<LoginSignup> {
               ),
             ),
           ),
-          Positioned(
-            top: isSignUp ? 426.0 : 396.0,
+          AnimatedPositioned(
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.easeIn,
+            top: isSignUp ? 438.0 : 408.0,
             left: 0.0, right: 0.0,
             child: Center(
               child: Container(
