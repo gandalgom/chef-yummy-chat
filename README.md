@@ -18,3 +18,12 @@
 * macOS 12.4 Monterey
 * Android Studio Chipmunk (2021.2.1, patch 1)
 * Flutter 3.0.3
+
+### Git 이용시 장점
+
+git을 이용하여 코드를 내려받을 경우, 주요 업데이트 시점으로 reset 해가면서 진행 상황을 보는 것이 가능  
+최초 시작 시점의 경우 별도의 base 브랜치로 분리하여 두었으므로, checkout 하여 거기서부터 작업 가능
+
+```
+git checkout base
+```

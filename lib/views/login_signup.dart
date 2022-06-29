@@ -34,17 +34,17 @@ class _LoginSignupState extends State<LoginSignup> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     RichText(
-                      text: const TextSpan(
+                      text: TextSpan(
                         text: 'Welcome',
-                        style: TextStyle(
+                        style: const TextStyle(
                           letterSpacing: 1.0,
                           fontSize: 24.0,
                           color: Colors.white,
                         ),
                         children: [
                           TextSpan(
-                            text: ' to Yummy chat!',
-                            style: TextStyle(
+                            text: isSignUp ? ' to Yummy chat!' : ' Back!',
+                            style: const TextStyle(
                               letterSpacing: 1.0,
                               fontSize: 24.0,
                               color: Colors.white,
@@ -55,9 +55,9 @@ class _LoginSignupState extends State<LoginSignup> {
                       ),
                     ),
                     const SizedBox(height: 4.0),
-                    const Text(
-                      'Signup to continue',
-                      style: TextStyle(
+                    Text(
+                      isSignUp ? 'Sign up to continue' : 'Sign in to continue',
+                      style: const TextStyle(
                         letterSpacing: 1.0,
                         color: Colors.white,
                       ),
@@ -71,7 +71,7 @@ class _LoginSignupState extends State<LoginSignup> {
             top: 184.0,
             child: Container(
               padding: const EdgeInsets.all(20.0),
-              height: 280.0,
+              height: isSignUp ? 280.0 : 248.0,
               width: MediaQuery.of(context).size.width - 32,
               margin: const EdgeInsets.symmetric(horizontal: 16.0),
               decoration: BoxDecoration(
@@ -99,8 +99,8 @@ class _LoginSignupState extends State<LoginSignup> {
                               style: TextStyle(
                                 fontSize: 16.0,
                                 fontWeight: FontWeight.bold,
-                                color: !isSignUp ? Palette.activate
-                                  : Palette.deactivate,
+                                color: !isSignUp ? Palette.focusedText
+                                  : Palette.lightText,
                               ),
                             ),
                             if (!isSignUp)
@@ -122,8 +122,8 @@ class _LoginSignupState extends State<LoginSignup> {
                               style: TextStyle(
                                 fontSize: 16.0,
                                 fontWeight: FontWeight.bold,
-                                color: isSignUp ? Palette.activate
-                                  : Palette.deactivate,
+                                color: isSignUp ? Palette.focusedText
+                                  : Palette.lightText,
                               ),
                             ),
                             if (isSignUp)
@@ -138,6 +138,7 @@ class _LoginSignupState extends State<LoginSignup> {
                       ),
                     ],
                   ),
+                  if (isSignUp)
                   Container(
                     margin: const EdgeInsets.only(top: 20.0),
                     child: Form(
@@ -151,7 +152,7 @@ class _LoginSignupState extends State<LoginSignup> {
                               ),
                               enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                  color: Palette.deactivate,
+                                  color: Palette.lightText,
                                 ),
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(36.0)
@@ -159,7 +160,7 @@ class _LoginSignupState extends State<LoginSignup> {
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                  color: Palette.deactivate,
+                                  color: Palette.lightText,
                                 ),
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(36.0)
@@ -168,7 +169,7 @@ class _LoginSignupState extends State<LoginSignup> {
                               hintText: 'User name',
                               hintStyle: TextStyle(
                                 fontSize: 14.0,
-                                color: Palette.deactivate,
+                                color: Palette.lightText,
                               ),
                               contentPadding: EdgeInsets.all(12.0),
                             ),
@@ -177,12 +178,12 @@ class _LoginSignupState extends State<LoginSignup> {
                           TextFormField(
                             decoration: const InputDecoration(
                               prefixIcon: Icon(
-                                Icons.account_circle,
+                                Icons.email,
                                 color: Palette.icon,
                               ),
                               enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                  color: Palette.deactivate,
+                                  color: Palette.lightText,
                                 ),
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(36.0)
@@ -190,16 +191,16 @@ class _LoginSignupState extends State<LoginSignup> {
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                  color: Palette.deactivate,
+                                  color: Palette.lightText,
                                 ),
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(36.0)
                                 ),
                               ),
-                              hintText: 'User name',
+                              hintText: 'e-mail',
                               hintStyle: TextStyle(
                                 fontSize: 14.0,
-                                color: Palette.deactivate,
+                                color: Palette.lightText,
                               ),
                               contentPadding: EdgeInsets.all(12.0),
                             ),
@@ -208,12 +209,12 @@ class _LoginSignupState extends State<LoginSignup> {
                           TextFormField(
                             decoration: const InputDecoration(
                               prefixIcon: Icon(
-                                Icons.account_circle,
+                                Icons.lock,
                                 color: Palette.icon,
                               ),
                               enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                  color: Palette.deactivate,
+                                  color: Palette.lightText,
                                 ),
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(36.0)
@@ -221,7 +222,47 @@ class _LoginSignupState extends State<LoginSignup> {
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                  color: Palette.deactivate,
+                                  color: Palette.lightText,
+                                ),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(36.0)
+                                ),
+                              ),
+                              hintText: 'password',
+                              hintStyle: TextStyle(
+                                fontSize: 14.0,
+                                color: Palette.lightText,
+                              ),
+                              contentPadding: EdgeInsets.all(12.0),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  if (!isSignUp)
+                  Container(
+                    margin: const EdgeInsets.only(top: 20.0),
+                    child: Form(
+                      child: Column(
+                        children: [
+                          TextFormField(
+                            decoration: const InputDecoration(
+                              prefixIcon: Icon(
+                                Icons.account_circle,
+                                color: Palette.icon,
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Palette.lightText,
+                                ),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(36.0)
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Palette.lightText,
                                 ),
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(36.0)
@@ -230,7 +271,38 @@ class _LoginSignupState extends State<LoginSignup> {
                               hintText: 'User name',
                               hintStyle: TextStyle(
                                 fontSize: 14.0,
-                                color: Palette.deactivate,
+                                color: Palette.lightText,
+                              ),
+                              contentPadding: EdgeInsets.all(12.0),
+                            ),
+                          ),
+                          const SizedBox(height: 8.0),
+                          TextFormField(
+                            decoration: const InputDecoration(
+                              prefixIcon: Icon(
+                                Icons.lock,
+                                color: Palette.icon,
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Palette.lightText,
+                                ),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(36.0)
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Palette.lightText,
+                                ),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(36.0)
+                                ),
+                              ),
+                              hintText: 'password',
+                              hintStyle: TextStyle(
+                                fontSize: 14.0,
+                                color: Palette.lightText,
                               ),
                               contentPadding: EdgeInsets.all(12.0),
                             ),
@@ -244,7 +316,8 @@ class _LoginSignupState extends State<LoginSignup> {
             ),
           ),
           Positioned(
-            top: 430.0, left: 0.0, right: 0.0,
+            top: isSignUp ? 426.0 : 396.0,
+            left: 0.0, right: 0.0,
             child: Center(
               child: Container(
                 padding: const EdgeInsets.all(15.0),
@@ -282,7 +355,7 @@ class _LoginSignupState extends State<LoginSignup> {
             right: 0.0,
             child: Column(
               children: [
-                const Text('or Signup with'),
+                Text(isSignUp ? 'or sign up with' : 'or sign in with'),
                 const SizedBox(height: 16.0),
                 TextButton.icon(
                   onPressed: () {},
