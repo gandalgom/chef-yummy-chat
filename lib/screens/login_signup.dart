@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:yummy_chat/config/palette.dart';
+import 'package:yummy_chat/screens/chat_screen.dart';
 
 class LoginSignup extends StatefulWidget {
   const LoginSignup({Key? key}) : super(key: key);
@@ -24,6 +26,8 @@ class _LoginSignupState extends State<LoginSignup> {
   String userName = '';
   String userEmail = '';
   String userPassword = '';
+
+  final _authentication = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -196,6 +200,9 @@ class _LoginSignupState extends State<LoginSignup> {
                                   ),
                                   contentPadding: EdgeInsets.all(12.0),
                                 ),
+                                onChanged: (value) {
+                                  userName = value;
+                                },
                                 onSaved: (value) {
                                   if (value != null) {
                                     userName = value;
@@ -240,6 +247,10 @@ class _LoginSignupState extends State<LoginSignup> {
                                   ),
                                   contentPadding: EdgeInsets.all(12.0),
                                 ),
+                                keyboardType: TextInputType.emailAddress,
+                                onChanged: (value) {
+                                  userEmail = value;
+                                },
                                 onSaved: (value) {
                                   if (value != null) {
                                     userEmail = value;
@@ -284,6 +295,10 @@ class _LoginSignupState extends State<LoginSignup> {
                                   ),
                                   contentPadding: EdgeInsets.all(12.0),
                                 ),
+                                obscureText: true,
+                                onChanged: (value) {
+                                  userPassword = value;
+                                },
                                 onSaved: (value) {
                                   if (value != null) {
                                     userPassword = value;
@@ -419,7 +434,31 @@ class _LoginSignupState extends State<LoginSignup> {
                     borderRadius: BorderRadius.circular(50.0),
                   ),
                   child: GestureDetector(
-                    onTap: () => _checkValidation(),
+                    onTap: () async {
+                      if (isSignUp) {
+                        _checkValidation();
+                        try {
+                          final newUser =
+                            await _authentication.createUserWithEmailAndPassword(
+                              email: userEmail,
+                              password: userPassword,
+                            );
+
+                          if (newUser.user != null) {
+                            moveChatScreen();
+                          }
+                        } on Exception {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                'Please check your e-mail and password'
+                              ),
+                              backgroundColor: Colors.blue,
+                            )
+                          );
+                        }
+                      }
+                    },
                     child: Container(
                       decoration: BoxDecoration(
                         gradient: const LinearGradient(
@@ -475,4 +514,8 @@ class _LoginSignupState extends State<LoginSignup> {
       ),
     );
   }
+
+  void moveChatScreen() => Navigator.push(context,
+    MaterialPageRoute(builder: (_) => const ChatScreen())
+  );
 }

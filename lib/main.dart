@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
-import 'package:yummy_chat/views/login_signup.dart';
+import 'package:yummy_chat/screens/login_signup.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

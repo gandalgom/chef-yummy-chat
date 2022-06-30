@@ -11,6 +11,7 @@
 ### 사용 라이브러리
 
 * [firebase_core](https://pub.dev/packages/firebase_core) 1.18.0
+* [firebase_auth](https://pub.dev/packages/firebase_auth) 3.3.20
 
 ### 특이사항
 
@@ -30,4 +31,19 @@ git을 이용하여 코드를 내려받을 경우, 주요 업데이트 시점으
 
 ```
 git checkout base
+```
+
+### firebase_auth 설치시 주의점 (ios)
+
+default 상태로 CocoaPod 설치시 오류가 발생.  
+ios/Podfile 파일을 열고 주석 처리되어 있는 상단 첫 라인을 확인해서
+
+```
+#platform :ios, '9.0'
+```
+
+주석을 풀고 이렇게 바꿔줘야 함 (버전은 더 올려도 상관없으나 최소 10.0 이상이어야 함)
+
+```
+platform :ios, '10.0'
 ```
