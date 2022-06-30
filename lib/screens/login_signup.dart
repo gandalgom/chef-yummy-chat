@@ -327,7 +327,7 @@ class _LoginSignupState extends State<LoginSignup> {
                                 key: const ValueKey(4),
                                 decoration: const InputDecoration(
                                   prefixIcon: Icon(
-                                    Icons.account_circle,
+                                    Icons.email,
                                     color: Palette.icon,
                                   ),
                                   enabledBorder: OutlineInputBorder(
@@ -346,16 +346,20 @@ class _LoginSignupState extends State<LoginSignup> {
                                       Radius.circular(36.0)
                                     ),
                                   ),
-                                  hintText: 'User name',
+                                  hintText: 'e-mail',
                                   hintStyle: TextStyle(
                                     fontSize: 14.0,
                                     color: Palette.lightText,
                                   ),
                                   contentPadding: EdgeInsets.all(12.0),
                                 ),
+                                keyboardType: TextInputType.emailAddress,
+                                onChanged: (value) {
+                                  userEmail = value;
+                                },
                                 onSaved: (value) {
                                   if (value != null) {
-                                    userName = value;
+                                    userEmail = value;
                                   }
                                 },
                                 validator: (value) {
@@ -397,6 +401,10 @@ class _LoginSignupState extends State<LoginSignup> {
                                   ),
                                   contentPadding: EdgeInsets.all(12.0),
                                 ),
+                                obscureText: true,
+                                onChanged: (value) {
+                                  userPassword = value;
+                                },
                                 onSaved: (value) {
                                   if (value != null) {
                                     userPassword = value;
@@ -443,8 +451,28 @@ class _LoginSignupState extends State<LoginSignup> {
                               email: userEmail,
                               password: userPassword,
                             );
-
                           if (newUser.user != null) {
+                            moveChatScreen();
+                          }
+                        } on Exception {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                'Please check your e-mail and password'
+                              ),
+                              backgroundColor: Colors.blue,
+                            )
+                          );
+                        }
+                      } else {
+                        _checkValidation();
+                        try {
+                          final loginUser =
+                            await _authentication.signInWithEmailAndPassword(
+                              email: userEmail,
+                              password: userPassword,
+                            );
+                          if (loginUser.user != null) {
                             moveChatScreen();
                           }
                         } on Exception {
