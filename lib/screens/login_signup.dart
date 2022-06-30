@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'package:yummy_chat/config/palette.dart';
-import 'package:yummy_chat/screens/chat_screen.dart';
+import '../config/color_palette.dart';
+import './chat_screen.dart';
 
 class LoginSignup extends StatefulWidget {
   const LoginSignup({Key? key}) : super(key: key);
