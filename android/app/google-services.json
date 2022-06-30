@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "84977988704",
+    "project_id": "yum-chat-47ab1",
+    "storage_bucket": "yum-chat-47ab1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:84977988704:android:486e369d273bfd408a7f05",
+        "android_client_info": {
+          "package_name": "com.gandalgom.yummy_chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "84977988704-5mtb37dv880leqoqub5094lg8a6hvn51.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAhQzQYEkjl9EQy7uFEGAzIFfYzJ6mbKFg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "84977988704-5mtb37dv880leqoqub5094lg8a6hvn51.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

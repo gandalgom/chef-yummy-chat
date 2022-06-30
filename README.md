@@ -8,6 +8,10 @@
 * Mixins
 * Stream / stream builder
 
+### 사용 라이브러리
+
+* [firebase_core](https://pub.dev/packages/firebase_core) 1.18.0
+
 ### 특이사항
 
 * 2022.06 기준 최신 문법 (Flutter 3.0.3)에 맞도록 수정
