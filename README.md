@@ -12,6 +12,7 @@
 
 * [firebase_core](https://pub.dev/packages/firebase_core) 1.18.0
 * [firebase_auth](https://pub.dev/packages/firebase_auth) 3.3.20
+* [cloud_firestore](https://pub.dev/packages/cloud_firestore) 3.1.18
 
 ### 특이사항
 
@@ -47,3 +48,25 @@ ios/Podfile 파일을 열고 주석 처리되어 있는 상단 첫 라인을 확
 ```
 platform :ios, '10.0'
 ```
+
+### cloud_firestore 설치시 주의점 (android)
+
+cloud_firestore 라이브러리의 android minSDK는 19이고, flutter의 android minSDK는 16으로 설치 오류 발생.  
+그러나 설치만을 위해 android minSDK를 기계적으로 19까지만 올릴 경우 **DexArchiveMergerException**을 보시게 됨.  
+오류가 아닌 안드로이드 아키텍처의 한계로 발생한 문제임. 자세히 알고 싶으신 분은 [링크 참조](https://developer.android.com/studio/build/multidex?hl=ko)
+
+이 내용은 **minSDK를 21 이상**으로 하면 별도 옵션없이 처리 가능함. (Android 5.0 부터 앱을 돌아가게 하겠다는 얘기. 언제적 폰임)  
+2022년 6월 현재 23으로도 가능 (Android 6.0. 점유율 95% 이상)
+
+```
+android {
+    defaultConfig {
+        applicationId "com.gandalgom.yummy_chat"
+        minSdkVersion 23
+        ...
+    }
+    ...
+}
+```
+
+플러터 android midSDK가 (구글이 일부러 그런거긴 하지만) 좀 심각하게 낮음.
