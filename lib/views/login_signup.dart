@@ -443,8 +443,11 @@ class _LoginSignupState extends State<LoginSignup> {
                 ),
               ),
             ),
-            Positioned(
-              top: MediaQuery.of(context).size.height - 128,
+            AnimatedPositioned(
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.easeIn,
+              top: isSignUp ? MediaQuery.of(context).size.height - 128
+                : MediaQuery.of(context).size.height - 168,
               left: 0.0,
               right: 0.0,
               child: Column(
