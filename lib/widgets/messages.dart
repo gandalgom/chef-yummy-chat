@@ -26,7 +26,8 @@ class Messages extends StatelessWidget {
         return ListView.builder(
           itemCount: chatDocs.length,
           itemBuilder: (context, index) =>
-              ChatBubble(
+              ChatBubbles(
+                chatDocs[index]['userID'].toString(),
                 chatDocs[index]['text'],
                 chatDocs[index]['userID'].toString() == user!.uid,
               ),

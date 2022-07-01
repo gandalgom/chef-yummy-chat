@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_bubble/chat_bubble.dart';
+import 'package:flutter_chat_bubble/bubble_type.dart';
+import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_8.dart';
 
-class ChatBubble extends StatelessWidget {
-  const ChatBubble(this.message, this.isMine, {Key? key}) : super(key: key);
+class ChatBubbles extends StatelessWidget {
+  const ChatBubbles(
+    this.userName,
+    this.message,
+    this.isMine,
+    {Key? key}
+  ) : super(key: key);
 
+  final String userName;
   final String message;
   final bool isMine;
 
@@ -12,24 +21,41 @@ class ChatBubble extends StatelessWidget {
       mainAxisAlignment: isMine
           ? MainAxisAlignment.end : MainAxisAlignment.start,
       children: [
-        Container(
-          decoration: BoxDecoration(
-            color: isMine ? Colors.grey[300] : Colors.blue,
-            borderRadius: BorderRadius.only(
-              topLeft: const Radius.circular(12.0),
-              topRight: const Radius.circular(12.0),
-              bottomRight: isMine
-                  ? const Radius.circular(0) : const Radius.circular(12.0),
-              bottomLeft: isMine
-                  ? const Radius.circular(12.0) : const Radius.circular(0),
+        if (isMine)
+        Padding(
+          padding: const EdgeInsets.fromLTRB(0, 0, 5.0, 0),
+          child: ChatBubble(
+            clipper: ChatBubbleClipper8(type: BubbleType.sendBubble),
+            alignment: Alignment.topRight,
+            margin: const EdgeInsets.only(top: 20.0),
+            backGroundColor: Colors.blue,
+            child: Container(
+              constraints: BoxConstraints(
+                maxWidth: MediaQuery.of(context).size.width * 0.7,
+              ),
+              child: Text(
+                message,
+                style: const TextStyle(color: Colors.white),
+              ),
             ),
           ),
-          width: 160.0,
-          padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
-          margin: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
-          child: Text(
-            message,
-            style: TextStyle(color: isMine ? Colors.black : Colors.white),
+        ),
+        if (!isMine)
+        Padding(
+          padding: const EdgeInsets.fromLTRB(5.0, 0, 0, 0),
+          child: ChatBubble(
+            clipper: ChatBubbleClipper8(type: BubbleType.receiverBubble),
+            backGroundColor: const Color(0xffE7E7ED),
+            margin: const EdgeInsets.only(top: 20),
+            child: Container(
+              constraints: BoxConstraints(
+                maxWidth: MediaQuery.of(context).size.width * 0.7,
+              ),
+              child: Text(
+                message,
+                style: const TextStyle(color: Colors.black),
+              ),
+            ),
           ),
         ),
       ],
