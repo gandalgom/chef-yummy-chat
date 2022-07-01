@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 import '../config/color_palette.dart';
+import '../widgets/add_image.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -23,6 +24,33 @@ class _MainScreenState extends State<MainScreen> {
     if (isValid != null && isValid) {
       _formKey.currentState?.save();
     }
+  }
+
+  void showAlert(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          backgroundColor: Colors.white,
+          child: Container(
+            padding: const EdgeInsets.only(top: 16.0),
+            width: 160,
+            height: 296,
+            child: Column(
+              children: [
+                const AddImage(),
+                const SizedBox(height: 80.0),
+                TextButton.icon(
+                  onPressed: () => Navigator.pop(context),
+                  icon: const Icon(Icons.close),
+                  label: const Text('Close'),
+                ),
+              ],
+            ),
+          ),
+        );
+      }
+    );
   }
 
   String userName = '';
@@ -146,21 +174,34 @@ class _MainScreenState extends State<MainScreen> {
                               onTap: () => setState(() => isSignUp = true),
                               child: Column(
                                 children: [
-                                  Text(
-                                    'SIGNUP',
-                                    style: TextStyle(
-                                      fontSize: 16.0,
-                                      fontWeight: FontWeight.bold,
-                                      color: isSignUp ? Palette.focusedText
-                                        : Palette.lightText,
-                                    ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        'SIGNUP',
+                                        style: TextStyle(
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.bold,
+                                          color: isSignUp ? Palette.focusedText
+                                            : Palette.lightText,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 12.0),
+                                      GestureDetector(
+                                        onTap: () => showAlert(context),
+                                        child: Icon(
+                                          Icons.image,
+                                          color: isSignUp ? Colors.cyan
+                                              : Colors.grey[300],
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                   if (isSignUp)
                                   Container(
                                     height: 2.0,
                                     width: 64.0,
                                     color: Colors.orange,
-                                    margin: const EdgeInsets.only(top: 2.0),
+                                    margin: const EdgeInsets.fromLTRB(0, 2, 36, 0),
                                   ),
                                 ],
                               ),
