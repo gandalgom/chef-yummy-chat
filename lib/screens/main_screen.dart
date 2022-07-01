@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 import '../config/color_palette.dart';
-import './chat_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -466,7 +465,6 @@ class _MainScreenState extends State<MainScreen> {
                               });
                             
                             if (newUser.user != null) {
-                              moveChatScreen();
                               setState(() => isConnecting = false);
                             }
                           } on Exception {
@@ -489,7 +487,6 @@ class _MainScreenState extends State<MainScreen> {
                                 password: userPassword,
                               );
                             if (loginUser.user != null) {
-                              moveChatScreen();
                               setState(() => isConnecting = false);
                             }
                           } on Exception {
@@ -561,8 +558,4 @@ class _MainScreenState extends State<MainScreen> {
       ),
     );
   }
-
-  void moveChatScreen() => Navigator.push(context,
-    MaterialPageRoute(builder: (_) => const ChatScreen())
-  );
 }

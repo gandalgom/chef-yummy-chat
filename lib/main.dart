@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:yummy_chat/screens/chat_screen.dart';
 
 import 'config/firebase_options.dart';
 import 'screens/main_screen.dart';
@@ -24,7 +26,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MainScreen(),
+      home: StreamBuilder(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) => snapshot.hasData ? const ChatScreen()
+            : const MainScreen(),
+      ),
     );
   }
 }
