@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+
+import '../widgets/messages.dart';
+import '../widgets/new_message.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({Key? key}) : super(key: key);
@@ -28,37 +30,17 @@ class _ChatScreenState extends State<ChatScreen> {
         title: const Text('Chat screen'),
         actions: [
           IconButton(
-            onPressed: () {
-              _authentication.signOut();
-            },
+            onPressed: () => _authentication.signOut(),
             icon: const Icon(Icons.exit_to_app_sharp, color: Colors.white),
           ),
         ],
       ),
-      body: StreamBuilder(
-        builder: (BuildContext context,
-            AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          final docs = snapshot.data!.docs;
-          return ListView.builder(
-            itemCount: docs.length,
-            itemBuilder: (context, index) => Container(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                docs[index]['text'],
-                style: const TextStyle(fontSize: 20.0),
-              ),
-            ),
-          );
-        },
-        stream: FirebaseFirestore.instance
-            .collection('/chats/6of9E1Lp8yPUwYT0KwEm/message')
-            .snapshots(),
-      )
+      body: Column(
+        children: const [
+          Expanded(child: Messages()),
+          NewMessage(),
+        ],
+      ),
     );
   }
 
