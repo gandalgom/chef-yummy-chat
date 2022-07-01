@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 import '../config/color_palette.dart';
 import './chat_screen.dart';
 
-class LoginSignup extends StatefulWidget {
-  const LoginSignup({Key? key}) : super(key: key);
+class MainScreen extends StatefulWidget {
+  const MainScreen({Key? key}) : super(key: key);
 
   @override
-  State<LoginSignup> createState() => _LoginSignupState();
+  State<MainScreen> createState() => _MainScreenState();
 }
 
-class _LoginSignupState extends State<LoginSignup> {
+class _MainScreenState extends State<MainScreen> {
   bool isSignUp = true;
-  bool isShowSpinner = false;
+  bool isConnecting = false;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -36,7 +37,7 @@ class _LoginSignupState extends State<LoginSignup> {
     return Scaffold(
       backgroundColor: Palette.background,
       body: ModalProgressHUD(
-        inAsyncCall: isShowSpinner,
+        inAsyncCall: isConnecting,
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: Stack(
@@ -447,7 +448,7 @@ class _LoginSignupState extends State<LoginSignup> {
                     ),
                     child: GestureDetector(
                       onTap: () async {
-                        setState(() => isShowSpinner = true);
+                        setState(() => isConnecting = true);
                         if (isSignUp) {
                           _checkValidation();
                           try {
@@ -456,9 +457,17 @@ class _LoginSignupState extends State<LoginSignup> {
                                 email: userEmail,
                                 password: userPassword,
                               );
+                            
+                            await FirebaseFirestore.instance.collection('user')
+                              .doc(newUser.user!.uid)
+                              .set({
+                                'userName': userName,
+                                'email': userEmail,
+                              });
+                            
                             if (newUser.user != null) {
                               moveChatScreen();
-                              setState(() => isShowSpinner = false);
+                              setState(() => isConnecting = false);
                             }
                           } on Exception {
                             ScaffoldMessenger.of(context).showSnackBar(
@@ -469,6 +478,7 @@ class _LoginSignupState extends State<LoginSignup> {
                                 backgroundColor: Colors.blue,
                               )
                             );
+                            setState(() => isConnecting = false);
                           }
                         } else {
                           _checkValidation();
@@ -480,7 +490,7 @@ class _LoginSignupState extends State<LoginSignup> {
                               );
                             if (loginUser.user != null) {
                               moveChatScreen();
-                              setState(() => isShowSpinner = false);
+                              setState(() => isConnecting = false);
                             }
                           } on Exception {
                             ScaffoldMessenger.of(context).showSnackBar(
@@ -491,6 +501,7 @@ class _LoginSignupState extends State<LoginSignup> {
                                 backgroundColor: Colors.blue,
                               )
                             );
+                            setState(() => isConnecting = false);
                           }
                         }
                       },
