@@ -14,6 +14,8 @@
 * [firebase_auth](https://pub.dev/packages/firebase_auth) 3.3.20
 * [cloud_firestore](https://pub.dev/packages/cloud_firestore) 3.1.18
 * [modal_progress_hud_nsn](https://pub.dev/packages/modal_progress_hud_nsn) 0.2.1
+* [flutter_chat_bubble](https://pub.dev/packages/flutter_chat_bubble) 2.0.0
+* [image_picker](https://pub.dev/packages/image_picker) 0.8.5+3
 
 ### 특이사항
 
@@ -73,3 +75,5 @@ android {
 ```
 
 Flutter android midSDK version이 (구글이 계획적으로 그런거긴 하지만) 좀 심각하게 낮음.
+
+추가) **image_picker** minSDK가 **21 이상**이어서 그냥 고민없이 위처럼 하면 됨
