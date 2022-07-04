@@ -16,6 +16,7 @@
 * [modal_progress_hud_nsn](https://pub.dev/packages/modal_progress_hud_nsn) 0.2.1
 * [flutter_chat_bubble](https://pub.dev/packages/flutter_chat_bubble) 2.0.0
 * [image_picker](https://pub.dev/packages/image_picker) 0.8.5+3
+* [firebase_storage](https://pub.dev/packages/firebase_storage) 10.3.1
 
 ### 특이사항
 
@@ -40,7 +41,7 @@ git checkout base
 ### firebase_auth 설치시 주의점 (ios)
 
 default 상태로 CocoaPod 설치시 오류가 발생.  
-ios/Podfile 파일을 열고 주석 처리되어 있는 상단 첫 라인을 확인해서
+**ios/Podfile** 파일을 열고 주석 처리되어 있는 상단 첫 라인을 확인해서
 
 ```
 #platform :ios, '9.0'
@@ -61,7 +62,7 @@ cloud_firestore 라이브러리의 android minSDK는 19이고, flutter의 androi
 이 내용은 **minSDK를 21 이상**으로 하면 별도 옵션없이 처리 가능함. (Android 5.0 부터 앱을 돌아가게 하겠다는 얘기. 언제적 폰임)  
 2022년 6월 현재 23(Android 6.0. 점유율 95% 이상)으로도 가능. <u>앱 보안 안정성이 강화된 23 쪽을 추천</u>.
 
-android/app/build.gradle 파일을 열고 중간의 minSdkVersion 옆의 **flutter.minSdkVersion**텍스트를 지우고 바꿈
+**android/app/build.gradle** 파일을 열고 중간의 minSdkVersion 옆의 **flutter.minSdkVersion**텍스트를 지우고 바꿈
 
 ```
 android {
@@ -77,3 +78,31 @@ android {
 Flutter android midSDK version이 (구글이 계획적으로 그런거긴 하지만) 좀 심각하게 낮음.
 
 추가) **image_picker** minSDK가 **21 이상**이어서 그냥 고민없이 위처럼 하면 됨
+
+### firebase_storage 설치시 주의점 (ios)
+
+default 상태로 CocoaPod 설치시 오류 발생.
+**ios/Podfile** 파일 하단부의 다음 부분을 찾아
+
+```
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    flutter_additional_ios_build_settings(target)
+  end
+end
+```
+
+다음과 같이 내용을 추가해 주어야 함.
+
+```
+...
+    flutter_additional_ios_build_settings(target)
+    target.build_configurations.each do |config|
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '10.0'
+    end
+  end
+...
+```
+
+본래 9.0 이상이면 되지만, cloud_firestore의 최소 지원 버전이 10.0이기 때문에 10.0으로 적어주어야 함.
+
