@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 import '../config/color_palette.dart';
@@ -38,7 +41,7 @@ class _MainScreenState extends State<MainScreen> {
             height: 296,
             child: Column(
               children: [
-                const AddImage(),
+                AddImage(pickedImage),
                 const SizedBox(height: 80.0),
                 TextButton.icon(
                   onPressed: () => Navigator.pop(context),
@@ -56,6 +59,7 @@ class _MainScreenState extends State<MainScreen> {
   String userName = '';
   String userEmail = '';
   String userPassword = '';
+  File? userAvatarImage;
 
   final _authentication = FirebaseAuth.instance;
 
@@ -186,6 +190,7 @@ class _MainScreenState extends State<MainScreen> {
                                         ),
                                       ),
                                       const SizedBox(width: 12.0),
+                                      if (isSignUp)
                                       GestureDetector(
                                         onTap: () => showAlert(context),
                                         child: Icon(
@@ -488,8 +493,20 @@ class _MainScreenState extends State<MainScreen> {
                     ),
                     child: GestureDetector(
                       onTap: () async {
-                        setState(() => isConnecting = true);
+                        if (mounted) {
+                          setState(() => isConnecting = true);
+                        }
                         if (isSignUp) {
+                          if (userAvatarImage == null && mounted) {
+                            setState(() => isConnecting = false);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Please pick your image'),
+                                backgroundColor: Colors.blue,
+                              )
+                            );
+                            return;
+                          }
                           _checkValidation();
                           try {
                             final newUser =
@@ -497,7 +514,12 @@ class _MainScreenState extends State<MainScreen> {
                                 email: userEmail,
                                 password: userPassword,
                               );
-                            
+
+                            final refImage = FirebaseStorage.instance.ref()
+                                .child('avatar')
+                                .child('${newUser.user!.uid}.png');
+                            await refImage.putFile(userAvatarImage!);
+
                             await FirebaseFirestore.instance.collection('user')
                               .doc(newUser.user!.uid)
                               .set({
@@ -505,19 +527,21 @@ class _MainScreenState extends State<MainScreen> {
                                 'email': userEmail,
                               });
                             
-                            if (newUser.user != null) {
+                            if (newUser.user != null && mounted) {
                               setState(() => isConnecting = false);
                             }
                           } on Exception {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text(
-                                  'Please check your e-mail and password'
-                                ),
-                                backgroundColor: Colors.blue,
-                              )
-                            );
-                            setState(() => isConnecting = false);
+                            if (mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                    'Please check your e-mail and password'
+                                  ),
+                                  backgroundColor: Colors.blue,
+                                )
+                              );
+                              setState(() => isConnecting = false);
+                            }
                           }
                         } else {
                           _checkValidation();
@@ -527,19 +551,21 @@ class _MainScreenState extends State<MainScreen> {
                                 email: userEmail,
                                 password: userPassword,
                               );
-                            if (loginUser.user != null) {
+                            if (loginUser.user != null && mounted) {
                               setState(() => isConnecting = false);
                             }
                           } on Exception {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text(
-                                  'Please check your e-mail and password'
-                                ),
-                                backgroundColor: Colors.blue,
-                              )
-                            );
-                            setState(() => isConnecting = false);
+                            if (mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                    'Please check your e-mail and password'
+                                  ),
+                                  backgroundColor: Colors.blue,
+                                )
+                              );
+                              setState(() => isConnecting = false);
+                            }
                           }
                         }
                       },
@@ -598,5 +624,9 @@ class _MainScreenState extends State<MainScreen> {
         ),
       ),
     );
+  }
+
+  void pickedImage(File image) {
+    userAvatarImage = image;
   }
 }
