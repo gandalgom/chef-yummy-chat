@@ -50,6 +50,7 @@ class _NewMessageState extends State<NewMessage> {
     FirebaseFirestore.instance.collection('chat').add({
       'userID': FirebaseAuth.instance.currentUser!.uid,
       'userName': userData.data()!['userName'],
+      'avatar': userData['avatar'],
       'text': _userInputMessage,
       'time': Timestamp.now(),
     });

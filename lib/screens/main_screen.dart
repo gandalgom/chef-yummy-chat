@@ -519,12 +519,14 @@ class _MainScreenState extends State<MainScreen> {
                                 .child('avatar')
                                 .child('${newUser.user!.uid}.png');
                             await refImage.putFile(userAvatarImage!);
+                            final imageUrl = await refImage.getDownloadURL();
 
                             await FirebaseFirestore.instance.collection('user')
                               .doc(newUser.user!.uid)
                               .set({
                                 'userName': userName,
                                 'email': userEmail,
+                                'avatar': imageUrl,
                               });
                             
                             if (newUser.user != null && mounted) {
